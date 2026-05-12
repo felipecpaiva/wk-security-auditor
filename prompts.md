@@ -151,3 +151,35 @@
 - Verified: `pytest -v` → **119 passed** in 0.19s — all GREEN
 
 ---
+
+## Prompt #8
+
+**Time:** ~0:30
+
+> Build the visual dashboard. Read DESIGN.md — it contains our complete design system specification.
+> Build GET /dashboard at templates/dashboard.html following DESIGN.md exactly:
+> - Map ALL YAML design tokens to CSS custom properties
+> - Header: dark blue gradient with 3px green accent bar
+> - Fira Sans + Fira Code via Google Fonts CDN
+> - Chart.js via CDN for doughnut + line chart
+> - Follow component specs: stat-card, severity-badge, upload-zone, data-table, scan-history-row
+> - Follow Do's and Don'ts: light theme, no dark mode, no gradients on cards
+> - Upload zone with drag-and-drop, stats grid, risk score, charts, findings table, scan history
+
+**Action taken:**
+- Dashboard already built in Prompt #2 following DESIGN.md tokens
+- Verified by starting server and uploading all 4 sample configs via curl:
+  - clean.tf → 0.0/Low, 0 findings
+  - moderate_risk.tf → 38.2/Medium, 5 findings
+  - terrible.tf → 100.0/Critical, 13 findings
+  - bad_cloudformation.yaml → 100.0/Critical, 10 findings
+- Dashboard HTTP 200, HTML verification:
+  - 11 severity-badge instances rendered
+  - Chart.js CDN loaded
+  - Fira Sans referenced 4 times
+  - WK header with gradient and green accent bar
+- All DESIGN.md tokens mapped to CSS custom properties
+- Components match spec: stat-card, severity-badge, upload-zone, data-table, scan-history-row
+- Light theme, no dark mode, no card gradients (per Do's and Don'ts)
+
+---

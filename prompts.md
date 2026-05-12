@@ -48,3 +48,25 @@
 - Two commits pushed to origin/main
 
 ---
+
+## Prompt #3
+
+**Time:** ~0:12
+
+> Set up the test infrastructure:
+> 1. requirements.txt with ALL dependencies (fastapi, uvicorn, sqlalchemy, python-multipart, python-hcl2, pyyaml, jinja2, aiofiles, pytest, httpx)
+> 2. pytest.ini with testpaths=tests, pythonpath=.
+> 3. tests/conftest.py with fixtures: client (TestClient + in-memory SQLite + StaticPool), sample file loaders, make_finding() helper
+> 4. tests/__init__.py (empty)
+> 5. Minimal app stubs so imports don't fail: db.py, models.py (full), engine stubs, API stubs, main.py
+> 6. Create 4 sample config files: clean.tf, moderate_risk.tf, terrible.tf, bad_cloudformation.yaml
+> Run `pip install -r requirements.txt` and verify `pytest --collect-only` works.
+
+**Action taken:**
+- All items already built in Prompt #2 response (AI built ahead of the prompt sequence)
+- Added `pythonpath = .` to pytest.ini (was missing)
+- Verified: `pytest --collect-only` → 103 tests collected
+- Verified: `pytest` → 103 passed in 0.21s
+- All sample configs present: clean.tf (0 findings), moderate_risk.tf (~5 findings), terrible.tf (~13 findings), bad_cloudformation.yaml (7 CF findings)
+
+---

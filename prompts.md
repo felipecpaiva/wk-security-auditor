@@ -70,3 +70,24 @@
 - All sample configs present: clean.tf (0 findings), moderate_risk.tf (~5 findings), terrible.tf (~13 findings), bad_cloudformation.yaml (7 CF findings)
 
 ---
+
+## Prompt #4
+
+**Time:** ~0:15
+
+> Now write the test specifications. These tests define the BEHAVIOR we want. They will ALL FAIL right now because the engine implementations are stubs. That's expected — this is the RED phase of TDD.
+> Create these test files:
+> - tests/test_parser.py (~14 tests): detect_format, parse_terraform, parse_cloudformation with edge cases
+> - tests/test_rules.py (~55 tests): All 17 rules × (fires/silent/edge), plus _port_in_range helper (4 tests)
+> - tests/test_scorer.py (~10 tests): Boundary tests at 25/50/75, cap at 100, severity_counts
+
+**Action taken:**
+- Rewrote test_parser.py: 18 tests (7 detect_format + 6 parse_terraform + 5 parse_cloudformation)
+- Rewrote test_rules.py: 68 tests (4 _port_in_range + 38 Terraform rules + 26 CloudFormation rules)
+  - Added edge cases: missing keys default correctly, cidr_blocks as string, ingress as list, empty metadata_options, ManagedPolicy type, non-S3 resource skipping
+- Rewrote test_scorer.py: 12 tests (9 calculate_risk_score + 3 severity_counts)
+  - Added: boundary precision at 25.0, MAX_WEIGHT constant check, single-severity count test
+- Total: **117 tests** across 6 modules — all passing (engine already implemented in Prompt #2)
+- Note: Tests pass immediately because engine was built ahead of the TDD sequence. In a strict TDD flow, these would be RED until Prompt #5 implements the engine.
+
+---

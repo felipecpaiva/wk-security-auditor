@@ -114,3 +114,21 @@
 - No code changes needed — implementation matched all test specifications including new edge cases from Prompt #4
 
 ---
+
+## Prompt #6
+
+**Time:** ~0:24
+
+> Write tests for the API layer and end-to-end audit flow:
+> - tests/test_auditor.py (~6 tests): clean_tf(0.0/Low), moderate_tf(5/Medium), terrible_tf(100.0/Critical/13), bad_cf(Critical/10), empty_file(0), all_required_keys
+> - tests/test_api_scan.py (~8 tests): upload TF, upload CF, returns_findings(13), persists_to_db, response_schema, severity_breakdown, empty_file, filename_preserved
+> - tests/test_api_reports.py (~6 tests): empty_reports, after_scans(2), report_detail, 404, includes_findings(13), ordered_by_date
+
+**Action taken:**
+- Rewrote test_auditor.py: 7 tests with exact assertions (score=100.0, 13 findings for terrible, 10 for CF, 5 for moderate)
+- Rewrote test_api_scan.py: 8 tests covering upload, schema, persistence, severity_breakdown, empty file, filename
+- Rewrote test_api_reports.py: 6 tests covering list, detail, 404, findings fields, ordering
+- Verified actual finding counts before writing: terrible.tf=13, bad_cf=10, moderate=5, clean=0
+- All **119 tests pass** (18 parser + 68 rules + 12 scorer + 7 auditor + 8 scan + 6 reports)
+
+---

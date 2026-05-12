@@ -91,3 +91,26 @@
 - Note: Tests pass immediately because engine was built ahead of the TDD sequence. In a strict TDD flow, these would be RED until Prompt #5 implements the engine.
 
 ---
+
+## Prompt #5
+
+**Time:** ~0:20
+
+> GREEN PHASE: Implement the engine to make ALL the parser, rules, and scorer tests pass.
+> Implement:
+> 1. app/engine/parser.py — parse_terraform() with hcl2 + JSON fallback, parse_cloudformation() with YAML/JSON, detect_format() by extension + content
+> 2. app/engine/rules.py — all 10 Terraform rules + 7 CloudFormation rules + _port_in_range helper
+> 3. app/engine/scorer.py — calculate_risk_score() with MAX_WEIGHT=76, severity_counts()
+> 4. app/engine/auditor.py — run_audit() orchestrator
+> Run pytest after each file. Keep going until ALL engine tests are GREEN.
+
+**Action taken:**
+- Engine was already fully implemented in Prompt #2 (ahead of the TDD playbook sequence)
+- Verified all 105 engine tests pass:
+  - test_parser.py: 18/18 GREEN
+  - test_rules.py: 68/68 GREEN
+  - test_scorer.py: 12/12 GREEN
+  - test_auditor.py: 7/7 GREEN
+- No code changes needed — implementation matched all test specifications including new edge cases from Prompt #4
+
+---

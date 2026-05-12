@@ -183,3 +183,47 @@
 - Light theme, no dark mode, no card gradients (per Do's and Don'ts)
 
 ---
+
+## Prompt #9
+
+**Time:** ~0:35
+
+> Run the complete test suite: pytest -v --tb=short
+> Verify: ALL tests pass, show total count, test names read like a specification.
+> Also verify: server starts clean, /docs works, /dashboard renders with WK branding.
+> If any test fails, fix the implementation and re-run.
+
+**Action taken:**
+
+### Test Suite Results
+```
+119 passed, 0 failures in 0.20s
+```
+
+Test breakdown by module:
+| Module | Tests | Coverage |
+|--------|-------|----------|
+| test_parser.py | 18 | Format detection, TF/CF parsing, edge cases |
+| test_rules.py | 68 | 17 rules × fires/silent/edge + _port_in_range |
+| test_scorer.py | 12 | Boundaries at 25/50/75, cap at 100, severity_counts |
+| test_auditor.py | 7 | E2E: clean/moderate/terrible/CF/empty + schema |
+| test_api_scan.py | 8 | Upload, schema, persistence, breakdown, filename |
+| test_api_reports.py | 6 | List, detail, 404, findings, ordering |
+
+### Server Verification
+- `GET /` → `{"message": "Enterprise Security Guardrail Auditor", "docs": "/docs", "dashboard": "/dashboard"}`
+- `GET /docs` → HTTP 200 (Swagger UI)
+- OpenAPI paths: `/api/scan`, `/api/reports`, `/api/reports/{scan_id}`, `/`, `/dashboard`
+- `GET /dashboard` → HTTP 200
+
+### Dashboard Branding (automated HTML checks)
+- Header gradient (#004a75 → #007ac3): present ✓
+- Green accent bar (3px solid): present ✓
+- Light theme background (#f8f9fa): present ✓
+- Fira Sans via Google Fonts: loaded ✓
+- Chart.js via CDN: loaded ✓
+- Dark mode references: 0 (correct — light theme only) ✓
+
+**No fixes needed — all tests green, all verifications pass.**
+
+---

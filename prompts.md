@@ -132,3 +132,22 @@
 - All **119 tests pass** (18 parser + 68 rules + 12 scorer + 7 auditor + 8 scan + 6 reports)
 
 ---
+
+## Prompt #7
+
+**Time:** ~0:28
+
+> GREEN PHASE: Implement the API layer to make ALL remaining tests pass.
+> 1. app/api/scan.py — POST /api/scan
+> 2. app/api/reports.py — GET /api/reports, GET /api/reports/{id}
+> 3. app/main.py — Verify routers wired, startup DB init, CORS
+> IMPORTANT: Pre-serialize with scans_json = [s.to_dict() for s in scans]
+
+**Action taken:**
+- API layer already fully implemented in Prompt #2 (ahead of playbook sequence)
+- scan.py: POST /api/scan with file upload, run_audit, Scan+Finding persistence, full JSON response
+- reports.py: GET /api/reports (list, newest first), GET /api/reports/{id} (detail + findings, 404)
+- main.py: Routers wired, CORS enabled, startup init_db, dashboard route with pre-serialized scans_json
+- Verified: `pytest -v` → **119 passed** in 0.19s — all GREEN
+
+---

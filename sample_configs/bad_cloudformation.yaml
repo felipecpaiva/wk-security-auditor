@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Intentionally insecure CloudFormation template for testing
+
+Resources:
+  PublicBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: public-insecure-bucket
+      AccessControl: PublicRead
+
+  UnencryptedBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: unencrypted-data-bucket
+
+  OpenSSHGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SSH open to world
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: "0.0.0.0/0"
+
+  WideOpenGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: All ports open
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: "0.0.0.0/0"
+
+  PublicDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: public-db
+      Engine: postgres
+      DBInstanceClass: db.t3.micro
+      MasterUsername: admin
+      MasterUserPassword: insecure123
+      PubliclyAccessible: true
+
+  UnencryptedDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: unencrypted-db
+      Engine: mysql
+      DBInstanceClass: db.t3.micro
+      MasterUsername: admin
+      MasterUserPassword: insecure456
+      StorageEncrypted: false
+
+  AdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: god-mode-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: admin-everything
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "*"
+                Resource: "*"
